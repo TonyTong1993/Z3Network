@@ -12,7 +12,7 @@
 #import "Z3BaseRequest.h"
 #import "Z3BaseResponse.h"
 #import "Z3NetworkPrivate.h"
-#import <AFNetworking/AFNetworking.h>
+#import "AFNetworking.h"
 #import <pthread/pthread.h>
 #define Lock() pthread_mutex_lock(&_lock)
 #define Unlock() pthread_mutex_unlock(&_lock)
@@ -69,6 +69,10 @@
     }
     if (request.responseSerializer) {
         [_manager setResponseSerializer:request.responseSerializer];
+    }else {
+        AFHTTPResponseSerializer *responseSerializer = [[AFJSONResponseSerializer alloc] init];
+        responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"application/json", @"text/json", @"text/javascript",@"text/html",@"text/plain", nil];
+         [_manager setResponseSerializer:responseSerializer];
     }
     
     switch (request.method) {
@@ -148,7 +152,9 @@
     }
     if (error) {
          [(Z3BaseResponse*)response setError:error];
-         request.failureCompletionBlock(response);
+        dispatch_async(dispatch_get_main_queue(), ^{
+            request.failureCompletionBlock(response);
+        });
         //TODO:根据status code 判断是否需要重试
     }else {
         [(Z3BaseResponse*)response setResponseJSONObject:responseObject];
