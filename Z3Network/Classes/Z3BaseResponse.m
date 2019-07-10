@@ -8,6 +8,8 @@
 
 #import "Z3BaseResponse.h"
 #import "Z3NetworkPrivate.h"
+NSErrorDomain const Z3ServerErrorDomain = @"zzht.network.server.error";
+NSInteger const Z3ServerErrorCode = 10000;
 @implementation Z3BaseResponse
 - (void)toModel {
     

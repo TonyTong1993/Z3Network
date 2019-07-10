@@ -9,7 +9,8 @@
 #import <Foundation/Foundation.h>
 
 NS_ASSUME_NONNULL_BEGIN
-
+extern NSErrorDomain const Z3ServerErrorDomain;
+extern NSInteger const Z3ServerErrorCode;
 @interface Z3BaseResponse : NSObject
 @property (nonatomic,strong,readonly) NSHTTPURLResponse        *response;
 
@@ -26,6 +27,8 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, strong, readonly, nullable) id           data;
 
 @property (nonatomic, strong, readonly, nullable) NSError      *error;
+
+@property (nonatomic, copy, readonly, nullable) NSString      *errorMsg;
 
 - (void)toModel;
 @end

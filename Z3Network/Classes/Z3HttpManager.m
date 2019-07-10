@@ -145,26 +145,41 @@
     Unlock();
     id response = nil;
     if (request.responseClasz) {
-         response = [[request.responseClasz alloc] init];
-         NSAssert([response isKindOfClass:[Z3BaseResponse class]], @"responseClasz must be kind of Z3BaseResponse class");
+        response = [[request.responseClasz alloc] init];
+        NSAssert([response isKindOfClass:[Z3BaseResponse class]], @"responseClasz must be kind of Z3BaseResponse class");
     }else {
-         response = [[Z3BaseResponse alloc] init];
+        response = [[Z3BaseResponse alloc] init];
     }
     if (error) {
-         [(Z3BaseResponse*)response setError:error];
+        [(Z3BaseResponse*)response setError:error];
         dispatch_async(dispatch_get_main_queue(), ^{
             request.failureCompletionBlock(response);
         });
-        //TODO:根据status code 判断是否需要重试
+        
     }else {
         [(Z3BaseResponse*)response setResponseJSONObject:responseObject];
+        if ([responseObject isKindOfClass:[NSDictionary class]]) {
+            if ([[responseObject allKeys] containsObject:@"isSuccess"]) {
+                if (![responseObject[@"isSuccess"] boolValue]) {
+                    NSString *message = responseObject[@"msg"];
+                    if (message) {
+                        NSError *error = [NSError errorWithDomain:Z3ServerErrorDomain code:Z3ServerErrorCode userInfo:@{@"msg":message}];
+                        [(Z3BaseResponse*)response setError:error];
+                    }
+                    dispatch_async(dispatch_get_main_queue(), ^{
+                        request.failureCompletionBlock(response);
+                    });
+                    return;
+                }
+            }
+        }
         if ([(Z3BaseResponse*)response respondsToSelector:@selector(toModel)]) {
             [(Z3BaseResponse*)response toModel];
         }
         dispatch_async(dispatch_get_main_queue(), ^{
-             request.successCompletionBlock(response);
+            request.successCompletionBlock(response);
         });
-         //TODO:根据cache status 判断是否需要缓存数据
+            //TODO:根据cache status 判断是否需要缓存数据
     }
     [self removeRequestFromRecords:request];
 }
