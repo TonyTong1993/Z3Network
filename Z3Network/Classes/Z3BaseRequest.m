@@ -73,4 +73,8 @@
     return _userInfo;
 }
 
+- (BOOL)isExecuting {
+    return self.requestTask.state == NSURLSessionTaskStateRunning;
+}
+
 @end
