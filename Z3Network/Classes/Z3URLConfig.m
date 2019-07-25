@@ -38,7 +38,7 @@ static NSString * Z3URLConfigVirtualPathKey = @"com.zzht.url.config.virtual.path
 - (NSString *)host {
    NSString *host = [[NSUserDefaults standardUserDefaults] objectForKey:Z3URLConfigHostKey];
     if (host == nil) {
-        host = @"192.168.8.86";
+        host = @"218.4.199.150";
     }
     
     return host;
@@ -47,7 +47,7 @@ static NSString * Z3URLConfigVirtualPathKey = @"com.zzht.url.config.virtual.path
 - (NSString *)port {
     NSString *port = [[NSUserDefaults standardUserDefaults] objectForKey:Z3URLConfigPortKey];
     if (port == nil) {
-        port = @"7777";
+        port = @"8085";
     }
     
     return port;
