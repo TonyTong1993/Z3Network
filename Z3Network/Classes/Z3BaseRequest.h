@@ -55,7 +55,7 @@ typedef void(^ProgressCallback)(NSProgress *progress);;
     ///  Executing state of request task.
 @property (nonatomic, readonly, getter=isExecuting) BOOL executing;
 
-@property (nonatomic,copy,readonly) FormDataBuilder formDataBuilder;
+@property (nonatomic,copy) FormDataBuilder formDataBuilder;
 
 @property (nonatomic,copy) ProgressCallback progressCallback;
 
