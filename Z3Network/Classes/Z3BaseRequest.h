@@ -41,7 +41,7 @@ typedef void(^ProgressCallback)(NSProgress *progress);;
 @property (nonatomic,assign) short *retryCount;
 
 #pragma mark - Request and Response Information
-@property (nonatomic,strong,readonly) AFHTTPRequestSerializer *requestSerializer;
+@property (nonatomic,strong) AFHTTPRequestSerializer *requestSerializer;
 
 @property (nonatomic,strong,readonly) AFHTTPResponseSerializer *responseSerializer;
 

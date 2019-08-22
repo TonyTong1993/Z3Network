@@ -66,6 +66,8 @@
     NSURLSessionTask *task = nil;
     if (request.requestSerializer) {
         [_manager setRequestSerializer:request.requestSerializer];
+    }else {
+        [_manager setRequestSerializer:[AFHTTPRequestSerializer serializer]];
     }
     if (request.responseSerializer) {
         [_manager setResponseSerializer:request.responseSerializer];
