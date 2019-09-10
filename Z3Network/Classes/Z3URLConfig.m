@@ -36,9 +36,11 @@ static NSString * Z3URLConfigVirtualPathKey = @"com.zzht.url.config.virtual.path
 }
 
 - (NSString *)host {
-   NSString *host = [[NSUserDefaults standardUserDefaults] objectForKey:Z3URLConfigHostKey];
+    NSString *host = [[NSUserDefaults standardUserDefaults] objectForKey:Z3URLConfigHostKey];
     if (host == nil) {
-        host = @"218.4.199.150";
+//        host = @"https://test_gismobile.macaowatercloud.com";
+        host = @"http://2140u809i6.imwork.net";
+//        host = @"218.4.199.150";
     }
     
     return host;
@@ -47,9 +49,10 @@ static NSString * Z3URLConfigVirtualPathKey = @"com.zzht.url.config.virtual.path
 - (NSString *)port {
     NSString *port = [[NSUserDefaults standardUserDefaults] objectForKey:Z3URLConfigPortKey];
     if (port == nil) {
-        port = @"8085";
+//         port = @"443";
+        port = @"10938";
+//        port = @"8085";
     }
-    
     return port;
 }
 
@@ -63,11 +66,7 @@ static NSString * Z3URLConfigVirtualPathKey = @"com.zzht.url.config.virtual.path
 }
 
 - (NSURL *)baseURL {
-    NSMutableString *mBaseURL = [[NSMutableString alloc] initWithString:[self scheme]];
-    [mBaseURL appendString:@"://"];
-    [mBaseURL appendString:[self host]];
-    [mBaseURL appendString:@":"];
-    [mBaseURL appendString:[self port]];
+    NSMutableString *mBaseURL = [[NSMutableString alloc] initWithString:[self rootURLPath]];
     NSString *virtualPath = [self virtualPath];
     if (virtualPath == nil || virtualPath.length <= 0) {
         [mBaseURL appendString:@"/"];
@@ -80,6 +79,22 @@ static NSString * Z3URLConfigVirtualPathKey = @"com.zzht.url.config.virtual.path
         }
     }
    return [NSURL URLWithString:[mBaseURL copy]];
+}
+
+- (NSString *)rootURLPath {
+    NSString *host = [self host];
+    NSMutableString *mBaseURL = nil;
+    if ([host hasPrefix:@"http"]) {
+        mBaseURL = [[NSMutableString alloc] initWithString:host];
+    }else {
+        mBaseURL = [[NSMutableString alloc] initWithString:[self scheme]];
+        [mBaseURL appendString:@"://"];
+        [mBaseURL appendString:[self host]];
+    }
+    
+    [mBaseURL appendString:@":"];
+    [mBaseURL appendString:[self port]];
+    return [mBaseURL copy];
 }
 @end
 

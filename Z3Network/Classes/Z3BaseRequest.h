@@ -43,7 +43,7 @@ typedef void(^ProgressCallback)(NSProgress *progress);;
 #pragma mark - Request and Response Information
 @property (nonatomic,strong) AFHTTPRequestSerializer *requestSerializer;
 
-@property (nonatomic,strong,readonly) AFHTTPResponseSerializer *responseSerializer;
+@property (nonatomic,strong) AFHTTPResponseSerializer *responseSerializer;
 
 @property (nonatomic,strong,readwrite) NSURLSessionTask *requestTask;
 

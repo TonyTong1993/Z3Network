@@ -37,6 +37,11 @@ NS_ASSUME_NONNULL_BEGIN
  */
 @property (nonatomic,readonly) NSURL *baseURL;
 
+/**
+ 获取基础网址
+ */
+@property (nonatomic,copy,readonly) NSString *rootURLPath;
+
 + (instancetype)configration;
     
 /**
