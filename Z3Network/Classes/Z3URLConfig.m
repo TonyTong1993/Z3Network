@@ -38,9 +38,9 @@ static NSString * Z3URLConfigVirtualPathKey = @"com.zzht.url.config.virtual.path
 - (NSString *)host {
     NSString *host = [[NSUserDefaults standardUserDefaults] objectForKey:Z3URLConfigHostKey];
     if (host == nil) {
-        host = @"https://test_gismobile.macaowatercloud.com";
+//        host = @"https://test_gismobile.macaowatercloud.com";
 //        host = @"http://2140u809i6.imwork.net";
-//        host = @"218.4.199.150";
+        host = @"192.168.8.147";
     }
     
     return host;
@@ -49,7 +49,7 @@ static NSString * Z3URLConfigVirtualPathKey = @"com.zzht.url.config.virtual.path
 - (NSString *)port {
     NSString *port = [[NSUserDefaults standardUserDefaults] objectForKey:Z3URLConfigPortKey];
     if (port == nil) {
-         port = @"443";
+         port = @"7778";
 //        port = @"10938";
 //        port = @"8085";
     }
