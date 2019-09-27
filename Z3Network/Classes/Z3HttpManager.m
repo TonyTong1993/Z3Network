@@ -105,6 +105,7 @@
     
 - (NSURLSessionTask *)sendPOSTHttpRequest:(Z3BaseRequest *)request  {
     NSString *url = [self buildRequestUrl:request];
+    url = [url stringByAppendingFormat:@"?access_token=%@",[Z3User shareInstance].token];
     NSDictionary *params = [self buildRequestParameters:request];
     //判断请求是否需要上传formData
     NSURLSessionTask *task = nil;
