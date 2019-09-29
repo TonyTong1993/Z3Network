@@ -146,13 +146,14 @@
     Lock();
     Z3BaseRequest *request = _requestsRecord[@(task.taskIdentifier)];
     Unlock();
-    id response = nil;
+    Z3BaseResponse *response = nil;
     if (request.responseClasz) {
         response = [[request.responseClasz alloc] init];
         NSAssert([response isKindOfClass:[Z3BaseResponse class]], @"responseClasz must be kind of Z3BaseResponse class");
     }else {
         response = [[Z3BaseResponse alloc] init];
     }
+    
     if (error) {
         [(Z3BaseResponse*)response setError:error];
         dispatch_async(dispatch_get_main_queue(), ^{
