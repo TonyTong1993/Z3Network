@@ -30,6 +30,7 @@ typedef void(^ProgressCallback)(NSProgress *progress);;
  如果baseURL已经设置了，只需要设置relativeToURL
  */
 @property (nonatomic,copy,readonly) NSString *urlStr;
+@property (nonatomic,copy,readonly) NSString *token;
 
 /**
  如果设置了absoluteURL,此时baseURL将失效
