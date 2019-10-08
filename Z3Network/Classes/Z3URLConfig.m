@@ -41,6 +41,9 @@ static NSString * Z3URLConfigVirtualPathKey = @"com.zzht.url.config.virtual.path
 //        host = @"https://test_gismobile.macaowatercloud.com";
 //        host = @"http://2140u809i6.imwork.net";
         host = @"192.168.8.147";
+#ifdef SUQIAN
+         host = @"192.168.8.101";
+#endif
     }
     
     return host;
@@ -52,6 +55,9 @@ static NSString * Z3URLConfigVirtualPathKey = @"com.zzht.url.config.virtual.path
          port = @"7778";
 //        port = @"10938";
 //        port = @"8085";
+#ifdef SUQIAN
+        port = @"7777";
+#endif
     }
     return port;
 }
