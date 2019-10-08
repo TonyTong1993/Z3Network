@@ -68,7 +68,7 @@
 
 - (NSDictionary *)userInfo {
     if (!_userInfo) {
-        NSString *token = [Z3User shareInstance].token;
+        NSString *token = self.token;
         _userInfo = @{@"sys":@"android",
                       @"f":@"json",
                       @"_type":@"json",
