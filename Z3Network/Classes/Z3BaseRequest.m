@@ -68,11 +68,9 @@
 
 - (NSDictionary *)userInfo {
     if (!_userInfo) {
-        NSString *token = self.token;
         _userInfo = @{@"sys":@"android",
                       @"f":@"json",
                       @"_type":@"json",
-                      @"access_token":token ?: @""
                       };
     }
     return _userInfo;

@@ -13,6 +13,7 @@ NS_ASSUME_NONNULL_BEGIN
 @interface Z3NetworkConfig : NSObject
 @property (nonatomic,strong,readonly) Z3URLConfig *urlConfig;
 @property (nonatomic,strong,readonly) NSURL *baseURL;
+@property (nonatomic,copy) NSString *token;
 
 + (instancetype)shareConfig;
 + (instancetype)new NS_UNAVAILABLE;

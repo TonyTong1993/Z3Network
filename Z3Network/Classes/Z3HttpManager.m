@@ -94,6 +94,7 @@
 
 - (NSURLSessionTask *)sendGETHttpRequest:(Z3BaseRequest *)request {
     NSString *url = [self buildRequestUrl:request];
+//    url = [url stringByAppendingFormat:@"?access_token=%@",[Z3NetworkConfig shareConfig].token];
     NSDictionary *params = [self buildRequestParameters:request];
     NSURLSessionTask *task = [_manager GET:url parameters:params progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         [self handleRequestResult:task responseObject:responseObject error:nil];
@@ -105,7 +106,7 @@
     
 - (NSURLSessionTask *)sendPOSTHttpRequest:(Z3BaseRequest *)request  {
     NSString *url = [self buildRequestUrl:request];
-    url = [url stringByAppendingFormat:@"?access_token=%@",request.token];
+//    url = [url stringByAppendingFormat:@"?access_token=%@",[Z3NetworkConfig shareConfig].token];
     NSDictionary *params = [self buildRequestParameters:request];
     //判断请求是否需要上传formData
     NSURLSessionTask *task = nil;
@@ -192,7 +193,7 @@
     NSParameterAssert(request != nil);
     NSString *absoluteURL = request.absoluteURL;
     if (absoluteURL) {
-        return absoluteURL;
+        return [absoluteURL stringByAppendingFormat:@"?access_token=%@",[Z3NetworkConfig shareConfig].token];
     }else {
         NSURL *baseURL = [[Z3NetworkConfig shareConfig] baseURL];
         if ([[baseURL path] length] > 0 && ![[baseURL absoluteString] hasSuffix:@"/"]) {
@@ -200,7 +201,8 @@
         }
         NSString *urlStr = request.urlStr;
         NSURL *url = [NSURL URLWithString:urlStr relativeToURL:baseURL];
-        return [url absoluteString];
+        NSString *noTokenUrl = [url absoluteString];
+        return [noTokenUrl stringByAppendingFormat:@"?access_token=%@",[Z3NetworkConfig shareConfig].token];
     }
 }
 
