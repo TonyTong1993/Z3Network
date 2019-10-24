@@ -202,7 +202,10 @@
         NSString *urlStr = request.urlStr;
         NSURL *url = [NSURL URLWithString:urlStr relativeToURL:baseURL];
         NSString *noTokenUrl = [url absoluteString];
-        return [noTokenUrl stringByAppendingFormat:@"?access_token=%@",[Z3NetworkConfig shareConfig].token];
+        if ([Z3NetworkConfig shareConfig].token.length > 0) {
+            return [noTokenUrl stringByAppendingFormat:@"?access_token=%@",[Z3NetworkConfig shareConfig].token];
+        }
+        return noTokenUrl;
     }
 }
 
