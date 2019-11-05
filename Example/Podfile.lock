@@ -14,7 +14,7 @@ PODS:
   - AFNetworking/Serialization (3.2.1)
   - AFNetworking/UIKit (3.2.1):
     - AFNetworking/NSURLSession
-  - Z3Network (0.1.0):
+  - Z3Network (0.0.3):
     - AFNetworking (~> 3.2.1)
 
 DEPENDENCIES:
@@ -30,8 +30,8 @@ EXTERNAL SOURCES:
 
 SPEC CHECKSUMS:
   AFNetworking: b6f891fdfaed196b46c7a83cf209e09697b94057
-  Z3Network: de870b4e1584688cddff42159708c0744c31e5e2
+  Z3Network: 1e27ccb44028560f14a4257679367bfa418b70df
 
 PODFILE CHECKSUM: 167b451dd31fb6c390ec1972eb9a72a0feccd519
 
-COCOAPODS: 1.6.1
+COCOAPODS: 1.7.0.rc.1
