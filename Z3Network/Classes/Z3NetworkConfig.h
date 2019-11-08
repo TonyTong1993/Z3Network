@@ -21,6 +21,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (void)setUrlConfig:(Z3URLConfig * _Nonnull)urlConfig;
 - (BOOL)debugLogEnabled;
+- (NSString *)ipAndPort;
 @end
 
 NS_ASSUME_NONNULL_END

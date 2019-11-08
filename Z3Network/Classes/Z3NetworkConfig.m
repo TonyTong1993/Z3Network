@@ -36,4 +36,8 @@
     return YES;
 }
 
+- (NSString *)ipAndPort {
+    return [NSString stringWithFormat:@"http://%@:%@",_urlConfig.host,_urlConfig.port];
+}
+
 @end
