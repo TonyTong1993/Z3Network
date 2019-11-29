@@ -76,7 +76,7 @@
         responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"application/json", @"text/json", @"text/javascript",@"text/html",@"text/plain", nil];
          [_manager setResponseSerializer:responseSerializer];
     }
-    
+    [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
     switch (request.method) {
         case GET:
         task = [self sendGETHttpRequest:request];
@@ -94,7 +94,6 @@
 
 - (NSURLSessionTask *)sendGETHttpRequest:(Z3BaseRequest *)request {
     NSString *url = [self buildRequestUrl:request];
-//    url = [url stringByAppendingFormat:@"?access_token=%@",[Z3NetworkConfig shareConfig].token];
     NSDictionary *params = [self buildRequestParameters:request];
     NSURLSessionTask *task = [_manager GET:url parameters:params progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         [self handleRequestResult:task responseObject:responseObject error:nil];
@@ -158,6 +157,7 @@
     if (error) {
         [(Z3BaseResponse*)response setError:error];
         dispatch_async(dispatch_get_main_queue(), ^{
+            [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
             request.failureCompletionBlock(response);
         });
         
@@ -172,6 +172,8 @@
                         [(Z3BaseResponse*)response setError:error];
                     }
                     dispatch_async(dispatch_get_main_queue(), ^{
+                        [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+                        NSLog(@"task = %@",[task taskDescription]);
                         request.failureCompletionBlock(response);
                     });
                     return;
@@ -182,9 +184,10 @@
             [(Z3BaseResponse*)response toModel];
         }
         dispatch_async(dispatch_get_main_queue(), ^{
+            [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
             request.successCompletionBlock(response);
         });
-            //TODO:根据cache status 判断是否需要缓存数据
+        //TODO:根据cache status 判断是否需要缓存数据
     }
     [self removeRequestFromRecords:request];
 }
