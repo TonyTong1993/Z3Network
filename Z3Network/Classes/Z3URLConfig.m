@@ -12,6 +12,7 @@
 static NSString * Z3URLConfigHostKey = @"com.zzht.url.config.host";
 static NSString * Z3URLConfigPortKey = @"com.zzht.url.config.port";
 static NSString * Z3URLConfigVirtualPathKey = @"com.zzht.url.config.virtual.path";
+static NSString * Z3URLConfigWebURLKey = @"com.zzht.url.web.url";
 + (instancetype)configration {
     return [[Z3URLConfig alloc] init];
 }
@@ -28,6 +29,11 @@ static NSString * Z3URLConfigVirtualPathKey = @"com.zzht.url.config.virtual.path
 
 - (void)setVirtualPath:(NSString *)virtualPath {
     [[NSUserDefaults standardUserDefaults] setObject:virtualPath forKey:Z3URLConfigVirtualPathKey];
+    [[NSUserDefaults standardUserDefaults] synchronize];
+}
+
+- (void)setWebURL:(NSString *)webURL {
+    [[NSUserDefaults standardUserDefaults] setObject:webURL forKey:Z3URLConfigWebURLKey];
     [[NSUserDefaults standardUserDefaults] synchronize];
 }
 
@@ -71,6 +77,14 @@ static NSString * Z3URLConfigVirtualPathKey = @"com.zzht.url.config.virtual.path
     return virtualPath;
 }
 
+- (NSString *)webURL {
+    NSString *webURL = [[NSUserDefaults standardUserDefaults] objectForKey:Z3URLConfigWebURLKey];
+    if (webURL == nil) {
+        webURL = @"";
+    }
+    return webURL;
+}
+
 - (NSURL *)baseURL {
     NSMutableString *mBaseURL = [[NSMutableString alloc] initWithString:[self rootURLPath]];
     NSString *virtualPath = [self virtualPath];
@@ -84,7 +98,25 @@ static NSString * Z3URLConfigVirtualPathKey = @"com.zzht.url.config.virtual.path
              [mBaseURL appendString:virtualPath];
         }
     }
+    
    return [NSURL URLWithString:[mBaseURL copy]];
+}
+
+- (NSString *)baseURLString {
+    NSMutableString *mBaseURL = [[NSMutableString alloc] initWithString:[self rootURLPath]];
+    NSString *virtualPath = [self virtualPath];
+    if (virtualPath == nil || virtualPath.length <= 0) {
+        [mBaseURL appendString:@"/"];
+    }else {
+        if ([virtualPath hasPrefix:@"/"]) {
+            [mBaseURL appendString:virtualPath];
+        }else {
+            [mBaseURL appendString:@"/"];
+            [mBaseURL appendString:virtualPath];
+        }
+    }
+    
+    return [mBaseURL copy];
 }
 
 - (NSString *)rootURLPath {

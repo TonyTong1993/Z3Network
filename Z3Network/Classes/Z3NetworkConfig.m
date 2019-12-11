@@ -23,6 +23,7 @@
     if (self) {
         _urlConfig = [Z3URLConfig configration];
        _baseURL = [_urlConfig baseURL];
+        _baseURLString = [_urlConfig baseURLString];
     }
     return self;
 }

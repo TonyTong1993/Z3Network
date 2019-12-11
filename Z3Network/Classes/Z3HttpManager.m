@@ -198,13 +198,12 @@
     if (absoluteURL) {
         return [absoluteURL stringByAppendingFormat:@"?access_token=%@",[Z3NetworkConfig shareConfig].token];
     }else {
-        NSURL *baseURL = [[Z3NetworkConfig shareConfig] baseURL];
-        if ([[baseURL path] length] > 0 && ![[baseURL absoluteString] hasSuffix:@"/"]) {
-            baseURL = [baseURL URLByAppendingPathComponent:@""];
+        NSString *baseURLString = [[Z3NetworkConfig shareConfig] baseURLString];
+        if (![baseURLString hasSuffix:@"/"]) {
+            baseURLString = [baseURLString stringByAppendingString:@"/"];
         }
-        NSString *urlStr = request.urlStr;
-        NSURL *url = [NSURL URLWithString:urlStr relativeToURL:baseURL];
-        NSString *noTokenUrl = [url absoluteString];
+        NSString *urlString = request.urlStr;
+        NSString *noTokenUrl = [baseURLString stringByAppendingString:urlString];
         if ([Z3NetworkConfig shareConfig].token.length > 0) {
             return [noTokenUrl stringByAppendingFormat:@"?access_token=%@",[Z3NetworkConfig shareConfig].token];
         }
