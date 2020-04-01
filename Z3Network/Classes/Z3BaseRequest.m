@@ -68,9 +68,11 @@
 
 - (NSDictionary *)userInfo {
     if (!_userInfo) {
-        _userInfo = @{@"sys":@"android",
+        //TODO:设置公共参数的位置需要修改
+        _userInfo = @{@"sys":@"mpat",
                       @"f":@"json",
                       @"_type":@"json",
+                      @"client":@"app"
                       };
     }
     return _userInfo;

@@ -42,6 +42,8 @@ NS_ASSUME_NONNULL_BEGIN
  */
 @property (nonatomic,copy,readonly) NSString *rootURLPath;
 
+@property (nonatomic,copy) NSString *webURL;
+
 + (instancetype)configration;
     
 /**
