@@ -68,7 +68,7 @@
 
 - (NSDictionary *)userInfo {
     if (!_userInfo) {
-        _userInfo = @{@"sys":@"android",
+        _userInfo = @{@"sys":@"mobile",
                       @"f":@"json",
                       @"_type":@"json",
                       };
