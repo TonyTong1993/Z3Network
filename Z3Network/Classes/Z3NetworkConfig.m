@@ -23,6 +23,7 @@
     if (self) {
         _urlConfig = [Z3URLConfig configration];
        _baseURL = [_urlConfig baseURL];
+       _baseURLString = [_urlConfig baseURLString];
     }
     return self;
 }
@@ -30,6 +31,7 @@
 - (void)setUrlConfig:(Z3URLConfig *)urlConfig {
     _urlConfig = urlConfig;
     _baseURL = [urlConfig baseURL];
+    _baseURLString = [_urlConfig baseURLString];
 }
 
 - (BOOL)debugLogEnabled {

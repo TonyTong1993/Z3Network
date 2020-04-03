@@ -37,12 +37,15 @@ NS_ASSUME_NONNULL_BEGIN
  */
 @property (nonatomic,readonly) NSURL *baseURL;
 
+@property (nonatomic,readonly) NSString *baseURLString;
+
 /**
  获取基础网址
  */
 @property (nonatomic,copy,readonly) NSString *rootURLPath;
 
-@property (nonatomic,copy) NSString *webURL;
+@property (nonatomic,copy,readonly) NSString *webURL;
+
 
 + (instancetype)configration;
     
@@ -66,6 +69,14 @@ NS_ASSUME_NONNULL_BEGIN
  @param virtualPath 虚拟路径
  */
 - (void)setVirtualPath:(NSString * _Nonnull)virtualPath;
+
+
+/**
+ 设置网页的根URL
+
+ @param webURL 根URL
+ */
+- (void)setWebURL:(NSString * _Nonnull)webURL;
 
 
 @end
