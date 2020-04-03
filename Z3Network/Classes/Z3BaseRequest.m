@@ -1,10 +1,10 @@
-    //
-    //  Z3BaseRequest.m
-    //  Z3Newwork_Example
-    //
-    //  Created by 童万华 on 2019/5/11.
-    //  Copyright © 2019 Tony Tony. All rights reserved.
-    //
+//
+//  Z3BaseRequest.m
+//  Z3Newwork_Example
+//
+//  Created by 童万华 on 2019/5/11.
+//  Copyright © 2019 Tony Tony. All rights reserved.
+//
 
 #import "Z3BaseRequest.h"
 #import "Z3HttpManager.h"
@@ -68,10 +68,16 @@
 
 - (NSDictionary *)userInfo {
     if (!_userInfo) {
-        _userInfo = @{@"sys":@"android",
+        //        _userInfo = @{@"sys":@"mobile",
+        //                      @"f":@"json",
+        //                      @"_type":@"json",
+        //                      };
+        
+        _userInfo = @{@"sys":@"mpat",
                       @"f":@"json",
                       @"_type":@"json",
-                      };
+                      @"client":@"app",
+        };
     }
     return _userInfo;
 }

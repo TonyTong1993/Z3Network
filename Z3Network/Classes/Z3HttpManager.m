@@ -60,7 +60,7 @@
     [_requestsRecord removeObjectForKey:@(request.requestTask.taskIdentifier)];
     Unlock();
 }
-    
+
 - (void)sendHttpRequest:(Z3BaseRequest *)request{
     NSParameterAssert(request != nil);
     NSURLSessionTask *task = nil;
@@ -74,18 +74,18 @@
     }else {
         AFHTTPResponseSerializer *responseSerializer = [[AFJSONResponseSerializer alloc] init];
         responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"application/json", @"text/json", @"text/javascript",@"text/html",@"text/plain", nil];
-         [_manager setResponseSerializer:responseSerializer];
+        [_manager setResponseSerializer:responseSerializer];
     }
     [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
     switch (request.method) {
         case GET:
-        task = [self sendGETHttpRequest:request];
-        break;
+            task = [self sendGETHttpRequest:request];
+            break;
         case POST:
-        task = [self sendPOSTHttpRequest:request];
-        break;
+            task = [self sendPOSTHttpRequest:request];
+            break;
         default:
-        break;
+            break;
     }
     request.requestTask = task;
     //将请求添加到records中
@@ -95,20 +95,20 @@
 - (NSURLSessionTask *)sendGETHttpRequest:(Z3BaseRequest *)request {
     NSString *url = [self buildRequestUrl:request];
     NSDictionary *params = [self buildRequestParameters:request];
+     __weak typeof(self) weakSelf = self;
     NSURLSessionTask *task = [_manager GET:url parameters:params progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
-        [self handleRequestResult:task responseObject:responseObject error:nil];
+        [weakSelf handleRequestResult:task responseObject:responseObject error:nil];
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
-        [self handleRequestResult:task responseObject:nil error:error];
+        [weakSelf handleRequestResult:task responseObject:nil error:error];
     }];
     return task;
 }
-    
+
 - (NSURLSessionTask *)sendPOSTHttpRequest:(Z3BaseRequest *)request  {
     NSString *url = [self buildRequestUrl:request];
-//    url = [url stringByAppendingFormat:@"?access_token=%@",[Z3NetworkConfig shareConfig].token];
     NSDictionary *params = [self buildRequestParameters:request];
-    //判断请求是否需要上传formData
     NSURLSessionTask *task = nil;
+    __weak typeof(self) weakSelf = self;
     if (request.formDataBuilder) {
         task = [_manager POST:url parameters:params constructingBodyWithBlock:^(id<AFMultipartFormData>  _Nonnull formData) {
             request.formDataBuilder(formData);
@@ -117,27 +117,27 @@
                 request.progressCallback(uploadProgress);
             }
         } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
-              [self handleRequestResult:task responseObject:responseObject error:nil];
+            [weakSelf handleRequestResult:task responseObject:responseObject error:nil];
         } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
-              [self handleRequestResult:task responseObject:nil error:error];
+            [weakSelf handleRequestResult:task responseObject:nil error:error];
         }];
     }else {
-       task = [_manager POST:url parameters:params progress:^(NSProgress * _Nonnull uploadProgress) {
-           if (request.progressCallback) {
-               request.progressCallback(uploadProgress);
-           }
+        task = [_manager POST:url parameters:params progress:^(NSProgress * _Nonnull uploadProgress) {
+            if (request.progressCallback) {
+                request.progressCallback(uploadProgress);
+            }
         } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
-             [self handleRequestResult:task responseObject:responseObject error:nil];
+            [weakSelf handleRequestResult:task responseObject:responseObject error:nil];
         } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
-             [self handleRequestResult:task responseObject:nil error:error];
+            [weakSelf handleRequestResult:task responseObject:nil error:error];
         }];
-
+        
     }
     return task;
 }
 
 - (void)cancelHttpRequest:(Z3BaseRequest *)request {
-     NSParameterAssert(request != nil);
+    NSParameterAssert(request != nil);
     [request.requestTask cancel];
     [self removeRequestFromRecords:request];
 }
@@ -159,13 +159,17 @@
         dispatch_async(dispatch_get_main_queue(), ^{
             [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
             request.failureCompletionBlock(response);
+#if DEBUG
+            NSLog(@"URL:\n %@ \n--------------------------------",[task currentRequest].URL);
+#endif
         });
         
     }else {
         [(Z3BaseResponse*)response setResponseJSONObject:responseObject];
         if ([responseObject isKindOfClass:[NSDictionary class]]) {
-            if ([[responseObject allKeys] containsObject:@"isSuccess"]) {
-                if (![responseObject[@"isSuccess"] boolValue]) {
+           
+            if ([[responseObject allKeys] containsObject:@"isSuccess"] || [[responseObject allKeys] containsObject:@"error"]) {
+                if (![responseObject[@"isSuccess"] boolValue] || responseObject[@"message"]) {
                     NSString *message = responseObject[@"msg"];
                     if (message) {
                         NSError *error = [NSError errorWithDomain:Z3ServerErrorDomain code:Z3ServerErrorCode userInfo:@{@"msg":message}];
@@ -173,7 +177,10 @@
                     }
                     dispatch_async(dispatch_get_main_queue(), ^{
                         [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
-                        NSLog(@"task = %@",[task taskDescription]);
+#if DEBUG
+                        NSLog(@"URL:\n %@ \n--------------------------------",[task currentRequest].URL);
+                        NSLog(@"response:\n %@ \n--------------------------------",responseObject);
+#endif
                         request.failureCompletionBlock(response);
                     });
                     return;
@@ -212,7 +219,7 @@
 }
 
 - (NSDictionary *)buildRequestParameters:(Z3BaseRequest *)request {
-     NSParameterAssert(request != nil);
+    NSParameterAssert(request != nil);
     NSDictionary *params = request.parameters;
     if (params == nil) {
         params = @{};
