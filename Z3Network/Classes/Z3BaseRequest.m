@@ -72,7 +72,7 @@
         //                      @"f":@"json",
         //                      @"_type":@"json",
         //                      };
-        _userInfo = @{@"sys":@"mobile",
+        _userInfo = @{@"sys":@"mpat",
                       @"f":@"json",
                       @"_type":@"json",
                       @"client":@"app",
