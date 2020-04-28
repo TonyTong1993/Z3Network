@@ -165,34 +165,28 @@
         });
         
     }else {
-        [(Z3BaseResponse*)response setResponseJSONObject:responseObject];
-        if ([responseObject isKindOfClass:[NSDictionary class]]) {
-            BOOL isSuccess = NO;
-            if([[responseObject allKeys] containsObject:@"isSuccess"]){
-                isSuccess = [responseObject[@"isSuccess"] boolValue];
-            }
-          
-            if([[responseObject allKeys] containsObject:@"msgCode"]){
-                isSuccess = (-1 != [responseObject[@"msgCode"]intValue]);
-            }
-            
-            if (!isSuccess) {
-              NSString *message = responseObject[@"msg"];
-              if (message) {
-              NSError *error = [NSError errorWithDomain:Z3ServerErrorDomain code:Z3ServerErrorCode userInfo:@{@"msg":message}];
-              [(Z3BaseResponse*)response setError:error];
-              }
-              dispatch_async(dispatch_get_main_queue(), ^{
-              [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
-#if DEBUG
-              NSLog(@"URL:\n %@ \n--------------------------------",[task currentRequest].URL);
-              NSLog(@"response:\n %@ \n--------------------------------",responseObject);
-#endif
-              request.failureCompletionBlock(response);
-            });
-            return;
-         }
-        }
+       [(Z3BaseResponse*)response setResponseJSONObject:responseObject];
+               if ([responseObject isKindOfClass:[NSDictionary class]]) {
+                  
+                   if ([[responseObject allKeys] containsObject:@"isSuccess"] || [[responseObject allKeys] containsObject:@"error"]) {
+                       if (![responseObject[@"isSuccess"] boolValue] || responseObject[@"message"]) {
+                           NSString *message = responseObject[@"msg"];
+                           if (message) {
+                               NSError *error = [NSError errorWithDomain:Z3ServerErrorDomain code:Z3ServerErrorCode userInfo:@{@"msg":message}];
+                               [(Z3BaseResponse*)response setError:error];
+                           }
+                           dispatch_async(dispatch_get_main_queue(), ^{
+                               [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+       #if DEBUG
+                               NSLog(@"URL:\n %@ \n--------------------------------",[task currentRequest].URL);
+                               NSLog(@"response:\n %@ \n--------------------------------",responseObject);
+       #endif
+                               request.failureCompletionBlock(response);
+                           });
+                           return;
+                       }
+                   }
+               }
         if ([(Z3BaseResponse*)response respondsToSelector:@selector(toModel)]) {
             [(Z3BaseResponse*)response toModel];
         }
