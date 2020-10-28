@@ -34,6 +34,10 @@
     _baseURLString = [_urlConfig baseURLString];
 }
 
+- (NSString *)getBaseURLStringWithOutVirtualpath{
+    return [_urlConfig baseURLStringWithOutVirtualPath];
+}
+
 - (BOOL)debugLogEnabled {
     return YES;
 }

@@ -13,6 +13,8 @@ static NSString * Z3URLConfigHostKey = @"com.zzht.url.config.host";
 static NSString * Z3URLConfigPortKey = @"com.zzht.url.config.port";
 static NSString * Z3URLConfigVirtualPathKey = @"com.zzht.url.config.virtual.path";
 static NSString * Z3URLConfigWebURLKey = @"com.zzht.url.web.url";
+static NSString * Z3URLConfigProtocolKey = @"com.zzht.url.config.protocol";
+static NSString * Z3URLConfigTraceReportURLKey = @"com.zzht.url.trace.report.url";
 + (instancetype)configration {
     return [[Z3URLConfig alloc] init];
 }
@@ -37,6 +39,16 @@ static NSString * Z3URLConfigWebURLKey = @"com.zzht.url.web.url";
     [[NSUserDefaults standardUserDefaults] synchronize];
 }
 
+- (void)setProtocol:(NSString * _Nonnull)protocol{
+    [[NSUserDefaults standardUserDefaults] setObject:protocol forKey:Z3URLConfigProtocolKey];
+    [[NSUserDefaults standardUserDefaults] synchronize];
+}
+
+- (void)setTraceReportURL:(NSString * _Nonnull)traceReportURL{
+    [[NSUserDefaults standardUserDefaults] setObject:traceReportURL forKey:Z3URLConfigTraceReportURLKey];
+    [[NSUserDefaults standardUserDefaults] synchronize];
+}
+
 - (NSString *)scheme {
     return @"http";
 }
@@ -44,9 +56,10 @@ static NSString * Z3URLConfigWebURLKey = @"com.zzht.url.web.url";
 - (NSString *)host {
     NSString *host = [[NSUserDefaults standardUserDefaults] objectForKey:Z3URLConfigHostKey];
     if (host == nil) {
-//        host = @"https://test_gismobile.macaowatercloud.com";
+        //host = @"https://test_gismobile.macaowatercloud.com";
+        host = @"https://gismobile.macaowatercloud.com";
 //        host = @"http://2140u809i6.imwork.net";
-        host = @"192.168.8.147";
+//        host = @"192.168.8.147";
 #ifdef SUQIAN
          host = @"192.168.8.101";
 #endif
@@ -58,7 +71,7 @@ static NSString * Z3URLConfigWebURLKey = @"com.zzht.url.web.url";
 - (NSString *)port {
     NSString *port = [[NSUserDefaults standardUserDefaults] objectForKey:Z3URLConfigPortKey];
     if (port == nil) {
-         port = @"7778";
+        port = @"443";
 //        port = @"10938";
 //        port = @"8085";
 #ifdef SUQIAN
@@ -77,12 +90,29 @@ static NSString * Z3URLConfigWebURLKey = @"com.zzht.url.web.url";
     return virtualPath;
 }
 
+- (NSString *)protocol {
+    NSString *protocol = [[NSUserDefaults standardUserDefaults] objectForKey:Z3URLConfigProtocolKey];
+    if (protocol == nil) {
+        protocol = @"http";
+    }
+    
+    return protocol;
+}
+
 - (NSString *)webURL {
     NSString *webURL = [[NSUserDefaults standardUserDefaults] objectForKey:Z3URLConfigWebURLKey];
     if (webURL == nil) {
         webURL = @"";
     }
     return webURL;
+}
+
+- (NSString *)traceReportURL {
+    NSString *traceReportURL = [[NSUserDefaults standardUserDefaults] objectForKey:Z3URLConfigTraceReportURLKey];
+    if (traceReportURL == nil) {
+        traceReportURL = @"";
+    }
+    return traceReportURL;
 }
 
 - (NSURL *)baseURL {
@@ -119,13 +149,20 @@ static NSString * Z3URLConfigWebURLKey = @"com.zzht.url.web.url";
     return [mBaseURL copy];
 }
 
+- (NSString *)baseURLStringWithOutVirtualPath{
+    NSMutableString *mBaseURL = [[NSMutableString alloc] initWithString:[self rootURLPath]];
+    [mBaseURL appendString:@"/"];
+    
+    return [mBaseURL copy];
+}
+
 - (NSString *)rootURLPath {
     NSString *host = [self host];
     NSMutableString *mBaseURL = nil;
     if ([host hasPrefix:@"http"]) {
         mBaseURL = [[NSMutableString alloc] initWithString:host];
     }else {
-        mBaseURL = [[NSMutableString alloc] initWithString:[self scheme]];
+        mBaseURL = [[NSMutableString alloc] initWithString:[self protocol]];
         [mBaseURL appendString:@"://"];
         [mBaseURL appendString:[self host]];
     }

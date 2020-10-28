@@ -89,6 +89,9 @@
     }
     request.requestTask = task;
     //将请求添加到records中
+#if DEBUG
+    NSLog(@"Current Request Url is: --> %@", request.requestTask.currentRequest.URL);
+#endif
     [self addRequestToRecords:request];
 }
 
@@ -204,12 +207,17 @@
     NSString *absoluteURL = request.absoluteURL;
     if (absoluteURL) {
         return [absoluteURL stringByAppendingFormat:@"?access_token=%@",[Z3NetworkConfig shareConfig].token];
-    }else {
+    } else {
         NSString *baseURLString = [[Z3NetworkConfig shareConfig] baseURLString];
+         NSString *urlString = request.urlStr;
+        if([urlString containsString:@"proxy9999"]){
+           baseURLString = [[Z3NetworkConfig shareConfig] getBaseURLStringWithOutVirtualpath];
+        }
+        
         if (![baseURLString hasSuffix:@"/"]) {
             baseURLString = [baseURLString stringByAppendingString:@"/"];
         }
-        NSString *urlString = request.urlStr;
+       
         NSString *noTokenUrl = [baseURLString stringByAppendingString:urlString];
         if ([Z3NetworkConfig shareConfig].token.length > 0) {
             return [noTokenUrl stringByAppendingFormat:@"?access_token=%@",[Z3NetworkConfig shareConfig].token];

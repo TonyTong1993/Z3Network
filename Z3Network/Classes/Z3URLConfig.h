@@ -46,6 +46,13 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (nonatomic,copy,readonly) NSString *webURL;
 
+@property (nonatomic,copy,readonly) NSString *traceReportURL;
+
+/**
+ 请求协议
+ */
+@property (nonatomic,readonly) NSString *protocol;
+
 
 + (instancetype)configration;
     
@@ -78,6 +85,19 @@ NS_ASSUME_NONNULL_BEGIN
  */
 - (void)setWebURL:(NSString * _Nonnull)webURL;
 
+/**
+ 设置请求协议 http还是 https
+ */
+- (void)setProtocol:(NSString * _Nonnull)protocol;
 
+/**
+ 设置网页的根URL
+
+ @param traceReportURL 根URL
+ */
+- (void)setTraceReportURL:(NSString * _Nonnull)traceReportURL;
+
+
+- (NSString *)baseURLStringWithOutVirtualPath;
 @end
 NS_ASSUME_NONNULL_END
