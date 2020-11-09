@@ -68,15 +68,15 @@
 
 - (NSDictionary *)userInfo {
     if (!_userInfo) {
-        //        _userInfo = @{@"sys":@"mobile",
-        //                      @"f":@"json",
-        //                      @"_type":@"json",
-        //                      };
-        _userInfo = @{@"sys":@"mpat",
-                      @"f":@"json",
-                      @"_type":@"json",
-                      @"client":@"app",
-        };
+                _userInfo = @{@"sys":@"mobile",
+                              @"f":@"json",
+                              @"_type":@"json",
+                              };
+//        _userInfo = @{@"sys":@"mpat",
+//                      @"f":@"json",
+//                      @"_type":@"json",
+//                      @"client":@"app",
+//        };
     }
     return _userInfo;
 }
