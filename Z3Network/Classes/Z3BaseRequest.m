@@ -8,6 +8,7 @@
 
 #import "Z3BaseRequest.h"
 #import "Z3HttpManager.h"
+
 @interface Z3BaseRequest()
 
 @end
@@ -69,6 +70,7 @@
 - (NSDictionary *)userInfo {
     if (!_userInfo) {
                 _userInfo = @{@"sys":@"mobile",
+                              @"operSys":@"ios",
                               @"f":@"json",
                               @"_type":@"json",
                               };

@@ -84,7 +84,7 @@ static NSString * Z3URLConfigTraceReportURLKey = @"com.zzht.url.trace.report.url
 - (NSString *)virtualPath {
     NSString *virtualPath = [[NSUserDefaults standardUserDefaults] objectForKey:Z3URLConfigVirtualPathKey];
     if (virtualPath == nil) {
-        virtualPath = @"ServiceEngine";
+        virtualPath = @"mobileSvr";
     }
     
     return virtualPath;
