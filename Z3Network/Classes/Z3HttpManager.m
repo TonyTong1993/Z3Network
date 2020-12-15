@@ -184,7 +184,7 @@
                                NSLog(@"URL:\n %@ \n--------------------------------",[task currentRequest].URL);
                                NSLog(@"response:\n %@ \n--------------------------------",responseObject);
        #endif
-                               request.failureCompletionBlock(response);
+                               request.successCompletionBlock(response);
                            });
                            return;
                        }
